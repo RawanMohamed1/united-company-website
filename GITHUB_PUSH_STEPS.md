@@ -52,20 +52,21 @@ git remote set-url origin https://github.com/RawanMohamed1/united-company-websit
 
 ## Step 8: Push to GitHub
 
-### Option A: Using Personal Access Token in URL (Easiest)
+### Option A: Using Personal Access Token in URL
 ```bash
-git remote set-url origin https://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@github.com/RawanMohamed1/united-company-website.git
+git remote set-url origin https://YOUR_TOKEN@github.com/RawanMohamed1/united-company-website.git
 git push -u origin main
 ```
+Replace `YOUR_TOKEN` with your Personal Access Token.
 
-### Option B: Using Credential Helper (More Secure)
+### Option B: Using Credential Helper (More Secure - Recommended)
 ```bash
 git remote set-url origin https://github.com/RawanMohamed1/united-company-website.git
 git push -u origin main
 ```
 When prompted:
 - Username: `RawanMohamed1`
-- Password: `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`
+- Password: Enter your Personal Access Token (not your GitHub password)
 
 ## Step 9: Verify Push
 Go to: https://github.com/RawanMohamed1/united-company-website
@@ -101,7 +102,7 @@ git add .
 git commit -m "Initial commit: United Company ANA website"
 git branch -M main
 git remote add origin https://github.com/RawanMohamed1/united-company-website.git
-git remote set-url origin https://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@github.com/RawanMohamed1/united-company-website.git
+git remote set-url origin https://YOUR_TOKEN@github.com/RawanMohamed1/united-company-website.git
 git push -u origin main
 ```
 

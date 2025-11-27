@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>United Company ANA | Construction & Engineering Work</title>
+    <link rel="icon" type="image/jpeg" href="images/logo.jpg">
+    <link rel="shortcut icon" type="image/jpeg" href="images/logo.jpg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/main.css?v=1.0">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="images/logo.jpg" alt="United Company ANA Logo" class="logo-img">
+                <h1><span data-en="United Company" data-ar="الشركة المتحدة" style="color: var(--primary);">United Company</span><span style="color: #00d0b8;"> ANA</span></h1>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link" data-en="Home" data-ar="الرئيسية">Home</a></li>
+                <li><a href="#about" class="nav-link" data-en="About Us" data-ar="من نحن">About Us</a></li>
+                <li class="dropdown">
+                    <a href="#services" class="nav-link dropdown-toggle" data-en="Products" data-ar="المنتجات">
+                        <span data-en="Products" data-ar="المنتجات">Products</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="industrial-supplies.html" class="nav-link" data-en="Industrial Supplies" data-ar="مستلزمات المصانع">Industrial Supplies</a></li>
+                        <li><a href="steel-structures.html" class="nav-link" data-en="Steel Structures" data-ar="المنشآت المعدنية">Steel Structures</a></li>
+                        <li><a href="welding-services.html" class="nav-link" data-en="Welding Services" data-ar="خدمات اللحام">Welding Services</a></li>
+                        <li><a href="kitchen-equipment.html" class="nav-link" data-en="Kitchen Equipment" data-ar="تجهيزات المطابخ">Kitchen Equipment</a></li>
+                        <li><a href="piping-systems.html" class="nav-link" data-en="Piping Systems" data-ar="أنظمة المواسير">Piping Systems</a></li>
+                        <li><a href="tanks-reservoirs.html" class="nav-link" data-en="Tanks & Reservoirs" data-ar="الخزانات والتنكات">Tanks & Reservoirs</a></li>
+                        <li><a href="ladders.html" class="nav-link" data-en="Ladders" data-ar="السلالم">Ladders</a></li>
+                    </ul>
+                </li>
+                <li><a href="#clients" class="nav-link" data-en="Clients" data-ar="عملاؤنا">Clients</a></li>
+                <li><a href="#contact" class="nav-link" data-en="Contact Us" data-ar="اتصل بنا">Contact Us</a></li>
+            </ul>
+            
+            <button class="language-toggle" id="languageToggle" aria-label="Toggle language" aria-pressed="false">
+                <span id="languageText">AR</span>
+            </button>
+            
+            <button class="mobile-menu" id="mobileMenu" aria-label="Open mobile menu" aria-expanded="false">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Navigation -->
+        <div class="mobile-nav" id="mobileNav">
+            <ul>
+                <li><a href="#home" class="nav-link" data-en="Home" data-ar="الرئيسية">Home</a></li>
+                <li><a href="#about" class="nav-link" data-en="About Us" data-ar="من نحن">About Us</a></li>
+                <li class="mobile-dropdown">
+                    <a href="#services" class="nav-link mobile-dropdown-toggle" data-en="Products" data-ar="المنتجات">
+                        <span data-en="Products" data-ar="المنتجات">Products</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <ul class="mobile-dropdown-menu">
+                        <li><a href="industrial-supplies.html" class="nav-link" data-en="Industrial Supplies" data-ar="مستلزمات المصانع">Industrial Supplies</a></li>
+                        <li><a href="steel-structures.html" class="nav-link" data-en="Steel Structures" data-ar="المنشآت المعدنية">Steel Structures</a></li>
+                        <li><a href="welding-services.html" class="nav-link" data-en="Welding Services" data-ar="خدمات اللحام">Welding Services</a></li>
+                        <li><a href="kitchen-equipment.html" class="nav-link" data-en="Kitchen Equipment" data-ar="تجهيزات المطابخ">Kitchen Equipment</a></li>
+                        <li><a href="piping-systems.html" class="nav-link" data-en="Piping Systems" data-ar="أنظمة المواسير">Piping Systems</a></li>
+                        <li><a href="tanks-reservoirs.html" class="nav-link" data-en="Tanks & Reservoirs" data-ar="الخزانات والتنكات">Tanks & Reservoirs</a></li>
+                        <li><a href="ladders.html" class="nav-link" data-en="Ladders" data-ar="السلالم">Ladders</a></li>
+                    </ul>
+                </li>
+                <li><a href="#clients" class="nav-link" data-en="Clients" data-ar="عملاؤنا">Clients</a></li>
+                <li><a href="#contact" class="nav-link" data-en="Contact Us" data-ar="اتصل بنا">Contact Us</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-carousel" id="heroCarousel">
+            <!-- Images will be dynamically loaded here -->
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <h2 class="hero-title" data-en="Construction & Engineering Excellence" data-ar="التميز في البناء والهندسة">Construction & Engineering Excellence</h2>
+            <p class="hero-subtitle" data-en="Your trusted partner for industrial solutions, manufacturing, and engineering services" data-ar="شريكك الموثوق للحلول الصناعية والتصنيع وخدمات الهندسة">Your trusted partner for industrial solutions, manufacturing, and engineering services</p>
+            <a href="#contact" class="btn" data-en="Get In Touch" data-ar="اتصل بنا">Get In Touch</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section" id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-en="About United Company ANA" data-ar="عن الشركة المتحدة ANA">About United Company ANA</h2>
+                <p data-en="With years of experience in construction and engineering, we deliver excellence in every project" data-ar="بسنوات من الخبرة في البناء والهندسة، نقدم التميز في كل مشروع">With years of experience in construction and engineering, we deliver excellence in every project</p>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-text">
+                    <h3 data-en="Our Expertise" data-ar="خبرتنا">Our Expertise</h3>
+                    <p data-en="United Company ANA specializes in comprehensive engineering solutions including kitchen equipment for hotels and hospitals, tank manufacturing, piping systems, welding services, and industrial supplies." data-ar="تتخصص الشركة المتحدة ANA في حلول الهندسة الشاملة بما في ذلك تجهيزات المطابخ للفنادق والمستشفيات، تصنيع الخزانات، أنظمة الأنابيب، خدمات اللحام، ومستلزمات المصانع.">United Company ANA specializes in comprehensive engineering solutions including kitchen equipment for hotels and hospitals, tank manufacturing, piping systems, welding services, and industrial supplies.</p>
+                    
+                    <div class="expertise-list">
+                        <div class="expertise-item">
+                            <i class="fas fa-industry"></i>
+                            <span data-en="Industrial Solutions" data-ar="الحلول الصناعية">Industrial Solutions</span>
+                        </div>
+                        <div class="expertise-item">
+                            <i class="fas fa-tools"></i>
+                            <span data-en="Manufacturing" data-ar="التصنيع">Manufacturing</span>
+                        </div>
+                        <div class="expertise-item">
+                            <i class="fas fa-hard-hat"></i>
+                            <span data-en="Construction" data-ar="البناء">Construction</span>
+                        </div>
+                        <div class="expertise-item">
+                            <i class="fas fa-cogs"></i>
+                            <span data-en="Engineering" data-ar="الهندسة">Engineering</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-image">
+                    <img src="images/logo.jpg" alt="United Company ANA Logo" class="about-logo">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="section" id="services">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-en="Our Products" data-ar="منتجاتنا">Our Products</h2>
+                <p data-en="Comprehensive engineering and construction products tailored to your needs" data-ar="منتجات شاملة في الهندسة والبناء مصممة خصيصًا لاحتياجاتك">Comprehensive engineering and construction products tailored to your needs</p>
+            </div>
+            
+            <div class="services-grid">
+                <!-- Service cards will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Clients Section -->
+    <section class="section clients" id="clients">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-en="Our Clients" data-ar="عملاؤنا">Our Clients</h2>
+                <p data-en="We're proud to have worked with leading companies across various industries" data-ar="نفخر بالعمل مع شركات رائدة في مختلف الصناعات">We're proud to have worked with leading companies across various industries</p>
+            </div>
+            
+            <div class="clients-grid">
+                <!-- Client logos will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-en="Contact Us" data-ar="اتصل بنا">Contact Us</h2>
+                <p data-en="Get in touch with us for your engineering and construction needs" data-ar="تواصل معنا لاحتياجاتك في الهندسة والبناء">Get in touch with us for your engineering and construction needs</p>
+            </div>
+            
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <h3 data-en="Our Location" data-ar="موقعنا">Our Location</h3>
+                            <p data-en="Al-Hijaz Mall Entrance, 10th of Ramadan City" data-ar="مدخل مول الحجاز، مدينة العاشر من رمضان">Al-Hijaz Mall Entrance, 10th of Ramadan City</p>
+                            <p data-en="Heliopolis, Behind Military Factory 81" data-ar="الهليوبوليس، خلف المصنع الحربي 81">Heliopolis, Behind Military Factory 81</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div>
+                            <h3 data-en="Phone Numbers" data-ar="أرقام الهاتف">Phone Numbers</h3>
+                            <p>01118544077</p>
+                            <p>01224328337</p>
+                            <p>01100056119</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h3 data-en="Email Address" data-ar="البريد الإلكتروني">Email Address</h3>
+                            <p>anaunited10@gmail.com</p>
+                            <p>ahmedashrafana03@gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name" data-en="Your Name" data-ar="اسمك">Your Name</label>
+                            <input type="text" id="name" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email" data-en="Your Email" data-ar="بريدك الإلكتروني">Your Email</label>
+                            <input type="email" id="email" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone" data-en="Phone Number" data-ar="رقم الهاتف">Phone Number</label>
+                            <input type="tel" id="phone" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="service" data-en="Service Interested In" data-ar="الخدمة المهتم بها">Service Interested In</label>
+                            <select id="service" class="form-control">
+                                <option value="" data-en="Select a service" data-ar="اختر خدمة">Select a service</option>
+                                <option value="industrial" data-en="Industrial Supplies" data-ar="مستلزمات المصانع">Industrial Supplies</option>
+                                <option value="structures" data-en="Steel Structures" data-ar="المنشآت المعدنية">Steel Structures</option>
+                                <option value="welding" data-en="Welding Services" data-ar="خدمات اللحام">Welding Services</option>
+                                <option value="kitchen" data-en="Kitchen Equipment" data-ar="تجهيزات المطابخ">Kitchen Equipment</option>
+                                <option value="piping" data-en="Piping Systems" data-ar="أنظمة المواسير">Piping Systems</option>
+                                <option value="tanks" data-en="Tanks & Reservoirs" data-ar="الخزانات والتنكات">Tanks & Reservoirs</option>
+                                <option value="ladders" data-en="Ladders" data-ar="السلالم">Ladders</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message" data-en="Your Message" data-ar="رسالتك">Your Message</label>
+                            <textarea id="message" class="form-control" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-block" data-en="Send Message" data-ar="إرسال الرسالة">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3 data-en="United Company ANA" data-ar="الشركة المتحدة ANA">United Company ANA</h3>
+                    <p data-en="United Company ANA - Your trusted partner for construction and engineering solutions since 2005." data-ar="الشركة المتحدة ANA - شريكك الموثوق لحلول البناء والهندسة منذ عام 2005.">United Company ANA - Your trusted partner for construction and engineering solutions since 2005.</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/profile.php?id=100048827246280&sfnsn=wa" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                        <a href="https://www.instagram.com/unitedcompanyana?igsh=YXBsOWl4eDB0b3pw" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3 data-en="Quick Links" data-ar="روابط سريعة">Quick Links</h3>
+                    <ul>
+                        <li><a href="#home" data-en="Home" data-ar="الرئيسية">Home</a></li>
+                        <li><a href="#about" data-en="About Us" data-ar="من نحن">About Us</a></li>
+                        <li><a href="#services" data-en="Products" data-ar="المنتجات">Products</a></li>
+                        <li><a href="#clients" data-en="Clients" data-ar="عملاؤنا">Clients</a></li>
+                        <li><a href="#contact" data-en="Contact" data-ar="اتصل بنا">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3 data-en="Our Products" data-ar="منتجاتنا">Our Products</h3>
+                    <ul>
+                        <li><a href="industrial-supplies.html" data-en="Industrial Supplies" data-ar="مستلزمات المصانع">Industrial Supplies</a></li>
+                        <li><a href="steel-structures.html" data-en="Steel Structures" data-ar="المنشآت المعدنية">Steel Structures</a></li>
+                        <li><a href="welding-services.html" data-en="Welding Services" data-ar="خدمات اللحام">Welding Services</a></li>
+                        <li><a href="kitchen-equipment.html" data-en="Kitchen Equipment" data-ar="تجهيزات المطابخ">Kitchen Equipment</a></li>
+                        <li><a href="piping-systems.html" data-en="Piping Systems" data-ar="أنظمة المواسير">Piping Systems</a></li>
+                        <li><a href="tanks-reservoirs.html" data-en="Tanks & Reservoirs" data-ar="الخزانات والتنكات">Tanks & Reservoirs</a></li>
+                        <li><a href="ladders.html" data-en="Ladders" data-ar="السلالم">Ladders</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3 data-en="Contact Info" data-ar="معلومات الاتصال">Contact Info</h3>
+                    <div class="contact-info-footer">
+                        <p><i class="fas fa-map-marker-alt"></i> <span data-en="10th of Ramadan City" data-ar="مدينة العاشر من رمضان">10th of Ramadan City</span></p>
+                        <p><i class="fas fa-phone"></i> 01118544077</p>
+                        <p><i class="fas fa-envelope"></i> anaunited10@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p data-en="&copy; 2023 United Company ANA. All Rights Reserved." data-ar="&copy; 2023 الشركة المتحدة ANA. جميع الحقوق محفوظة.">&copy; 2023 United Company ANA. All Rights Reserved.</p>
+                <p data-en="Engineer: Ashraf Saeed" data-ar="المهندس: أشرف سعيد">Engineer: Ashraf Saeed</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="scripts/main.js?v=1.0"></script>
+    <script src="scripts/contact.js?v=1.0"></script>
+</body>
+</html>

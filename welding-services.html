@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welding Services - United Company ANA</title>
+    <link rel="icon" type="image/jpeg" href="images/logo.jpg">
+    <link rel="shortcut icon" type="image/jpeg" href="images/logo.jpg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/main.css?v=1.0">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 15px;">
+                    <img src="images/logo.jpg" alt="United Company ANA Logo" class="logo-img">
+                    <h1><span data-en="United Company" data-ar="الشركة المتحدة" style="color: var(--primary);">United Company</span><span style="color: #00d0b8;"> ANA</span></h1>
+                </a>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="index.html#home" class="nav-link" data-en="Home" data-ar="الرئيسية">Home</a></li>
+                <li><a href="index.html#about" class="nav-link" data-en="About Us" data-ar="من نحن">About Us</a></li>
+                <li class="dropdown">
+                    <a href="#services" class="nav-link dropdown-toggle">
+                        <span data-en="Products" data-ar="المنتجات">Products</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="industrial-supplies.html" class="nav-link" data-en="Industrial Supplies" data-ar="مستلزمات المصانع">Industrial Supplies</a></li>
+                        <li><a href="steel-structures.html" class="nav-link" data-en="Steel Structures" data-ar="المنشآت المعدنية">Steel Structures</a></li>
+                        <li><a href="welding-services.html" class="nav-link" data-en="Welding Services" data-ar="خدمات اللحام">Welding Services</a></li>
+                        <li><a href="kitchen-equipment.html" class="nav-link" data-en="Kitchen Equipment" data-ar="تجهيزات المطابخ">Kitchen Equipment</a></li>
+                        <li><a href="piping-systems.html" class="nav-link" data-en="Piping Systems" data-ar="أنظمة المواسير">Piping Systems</a></li>
+                        <li><a href="tanks-reservoirs.html" class="nav-link" data-en="Tanks & Reservoirs" data-ar="الخزانات والتنكات">Tanks & Reservoirs</a></li>
+                        <li><a href="ladders.html" class="nav-link" data-en="Ladders" data-ar="السلالم">Ladders</a></li>
+                    </ul>
+                </li>
+                <li><a href="index.html#clients" class="nav-link" data-en="Clients" data-ar="عملاؤنا">Clients</a></li>
+                <li><a href="index.html#contact" class="nav-link" data-en="Contact Us" data-ar="اتصل بنا">Contact Us</a></li>
+            </ul>
+            
+            <button class="language-toggle" id="languageToggle" aria-label="Toggle language" aria-pressed="false">
+                <span id="languageText">AR</span>
+            </button>
+            
+            <button class="mobile-menu" id="mobileMenu" aria-label="Open mobile menu" aria-expanded="false">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Navigation -->
+        <div class="mobile-nav" id="mobileNav">
+            <ul>
+                <li><a href="index.html#home" class="nav-link" data-en="Home" data-ar="الرئيسية">Home</a></li>
+                <li><a href="index.html#about" class="nav-link" data-en="About Us" data-ar="من نحن">About Us</a></li>
+                <li class="mobile-dropdown">
+                    <a href="#services" class="nav-link mobile-dropdown-toggle">
+                        <span data-en="Products" data-ar="المنتجات">Products</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <ul class="mobile-dropdown-menu">
+                        <li><a href="industrial-supplies.html" class="nav-link" data-en="Industrial Supplies" data-ar="مستلزمات المصانع">Industrial Supplies</a></li>
+                        <li><a href="steel-structures.html" class="nav-link" data-en="Steel Structures" data-ar="المنشآت المعدنية">Steel Structures</a></li>
+                        <li><a href="welding-services.html" class="nav-link" data-en="Welding Services" data-ar="خدمات اللحام">Welding Services</a></li>
+                        <li><a href="kitchen-equipment.html" class="nav-link" data-en="Kitchen Equipment" data-ar="تجهيزات المطابخ">Kitchen Equipment</a></li>
+                        <li><a href="piping-systems.html" class="nav-link" data-en="Piping Systems" data-ar="أنظمة المواسير">Piping Systems</a></li>
+                        <li><a href="tanks-reservoirs.html" class="nav-link" data-en="Tanks & Reservoirs" data-ar="الخزانات والتنكات">Tanks & Reservoirs</a></li>
+                        <li><a href="ladders.html" class="nav-link" data-en="Ladders" data-ar="السلالم">Ladders</a></li>
+                    </ul>
+                </li>
+                <li><a href="index.html#clients" class="nav-link" data-en="Clients" data-ar="عملاؤنا">Clients</a></li>
+                <li><a href="index.html#contact" class="nav-link" data-en="Contact Us" data-ar="اتصل بنا">Contact Us</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Product Hero Section -->
+    <section class="product-hero">
+        <div class="container">
+            <div class="product-hero-content">
+                <div class="product-icon-large">
+                    <i class="fas fa-wrench"></i>
+                </div>
+                <h1 class="product-title" data-en="Welding Services" data-ar="خدمات اللحام">Welding Services</h1>
+                <p class="product-subtitle" data-en="Professional welding services including argon, copper, stainless steel, and aluminum welding." data-ar="خدمات لحام احترافية تشمل لحام الأرجون والنحاس والاستانلس ستيل والألومنيوم.">Professional welding services including argon, copper, stainless steel, and aluminum welding.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Details Section -->
+    <section class="section product-details">
+        <div class="container">
+            <div class="product-content-grid">
+                <div class="product-main-content">
+                    <h2 data-en="Overview" data-ar="نظرة عامة">Overview</h2>
+                    <p data-en="United Company ANA offers professional welding services using various techniques and materials. Our skilled welders are experienced in argon welding, copper welding, stainless steel welding, and aluminum welding. We provide high-quality welding solutions for industrial, commercial, and specialized applications." data-ar="تقدم الشركة المتحدة ANA خدمات لحام احترافية باستخدام تقنيات ومواد مختلفة. عمال اللحام المهرة لدينا لديهم خبرة في لحام الأرجون ولحام النحاس ولحام الاستانلس ستيل ولحام الألومنيوم. نقدم حلول لحام عالية الجودة للتطبيقات الصناعية والتجارية والمتخصصة.">United Company ANA offers professional welding services using various techniques and materials. Our skilled welders are experienced in argon welding, copper welding, stainless steel welding, and aluminum welding. We provide high-quality welding solutions for industrial, commercial, and specialized applications.</p>
+                    
+                    <h2 data-en="Features" data-ar="المميزات">Features</h2>
+                    <ul class="product-features-list">
+                        <li data-en="Argon welding - TIG welding for precision work" data-ar="لحام الأرجون - لحام TIG للأعمال الدقيقة">Argon welding - TIG welding for precision work</li>
+                        <li data-en="Stainless steel welding - For food-grade and sanitary applications" data-ar="لحام الاستانلس ستيل - للتطبيقات الغذائية والصحية">Stainless steel welding - For food-grade and sanitary applications</li>
+                        <li data-en="Aluminum welding - Lightweight and corrosion-resistant joints" data-ar="لحام الألومنيوم - وصلات خفيفة ومقاومة للتآكل">Aluminum welding - Lightweight and corrosion-resistant joints</li>
+                        <li data-en="Copper welding - For plumbing and electrical applications" data-ar="لحام النحاس - لتطبيقات السباكة والكهرباء">Copper welding - For plumbing and electrical applications</li>
+                        <li data-en="Structural welding - For buildings and industrial structures" data-ar="لحام الهياكل - للمباني والهياكل الصناعية">Structural welding - For buildings and industrial structures</li>
+                        <li data-en="Pipe welding - For pipeline installations" data-ar="لحام المواسير - لتركيبات خطوط الأنابيب">Pipe welding - For pipeline installations</li>
+                        <li data-en="Custom metal fabrication - Tailored welding solutions" data-ar="تصنيع المعادن حسب الطلب - حلول لحام مخصصة">Custom metal fabrication - Tailored welding solutions</li>
+                    </ul>
+                    
+                    <h2 data-en="Applications" data-ar="التطبيقات">Applications</h2>
+                    <p data-en="Our welding services are used in tank manufacturing, pipe installations, structural steel work, equipment fabrication, maintenance and repairs, and custom metalwork projects. All welding work is performed by certified welders following industry standards and quality assurance protocols." data-ar="تُستخدم خدمات اللحام لدينا في تصنيع الخزانات وتركيبات المواسير وأعمال الصلب الهيكلي وتصنيع المعدات والصيانة والإصلاحات ومشاريع الأعمال المعدنية المخصصة. يتم تنفيذ جميع أعمال اللحام بواسطة عمال لحام معتمدين يتبعون معايير الصناعة وبروتوكولات ضمان الجودة.">Our welding services are used in tank manufacturing, pipe installations, structural steel work, equipment fabrication, maintenance and repairs, and custom metalwork projects. All welding work is performed by certified welders following industry standards and quality assurance protocols.</p>
+                </div>
+                
+                <div class="product-sidebar">
+                    <div class="product-contact-card">
+                        <h3 data-en="Interested in this product?" data-ar="مهتم بهذا المنتج؟">Interested in this product?</h3>
+                        <p data-en="Contact us for more information and quotes" data-ar="اتصل بنا للمزيد من المعلومات والعروض">Contact us for more information and quotes</p>
+                        <a href="index.html#contact" class="btn" data-en="Get Quote" data-ar="احصل على عرض سعر">Get Quote</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3 data-en="United Company ANA" data-ar="الشركة المتحدة ANA">United Company ANA</h3>
+                    <p data-en="United Company ANA - Your trusted partner for construction and engineering solutions since 2005." data-ar="الشركة المتحدة ANA - شريكك الموثوق لحلول البناء والهندسة منذ عام 2005.">United Company ANA - Your trusted partner for construction and engineering solutions since 2005.</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/profile.php?id=100048827246280&sfnsn=wa" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                        <a href="https://www.instagram.com/unitedcompanyana?igsh=YXBsOWl4eDB0b3pw" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3 data-en="Quick Links" data-ar="روابط سريعة">Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html#home" data-en="Home" data-ar="الرئيسية">Home</a></li>
+                        <li><a href="index.html#about" data-en="About Us" data-ar="من نحن">About Us</a></li>
+                        <li><a href="index.html#services" data-en="Products" data-ar="المنتجات">Products</a></li>
+                        <li><a href="index.html#clients" data-en="Clients" data-ar="عملاؤنا">Clients</a></li>
+                        <li><a href="index.html#contact" data-en="Contact" data-ar="اتصل بنا">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3 data-en="Our Products" data-ar="منتجاتنا">Our Products</h3>
+                    <ul>
+                        <li><a href="industrial-supplies.html" data-en="Industrial Supplies" data-ar="مستلزمات المصانع">Industrial Supplies</a></li>
+                        <li><a href="steel-structures.html" data-en="Steel Structures" data-ar="المنشآت المعدنية">Steel Structures</a></li>
+                        <li><a href="welding-services.html" data-en="Welding Services" data-ar="خدمات اللحام">Welding Services</a></li>
+                        <li><a href="kitchen-equipment.html" data-en="Kitchen Equipment" data-ar="تجهيزات المطابخ">Kitchen Equipment</a></li>
+                        <li><a href="piping-systems.html" data-en="Piping Systems" data-ar="أنظمة المواسير">Piping Systems</a></li>
+                        <li><a href="tanks-reservoirs.html" data-en="Tanks & Reservoirs" data-ar="الخزانات والتنكات">Tanks & Reservoirs</a></li>
+                        <li><a href="ladders.html" data-en="Ladders" data-ar="السلالم">Ladders</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3 data-en="Contact Info" data-ar="معلومات الاتصال">Contact Info</h3>
+                    <div class="contact-info-footer">
+                        <p><i class="fas fa-map-marker-alt"></i> <span data-en="10th of Ramadan City" data-ar="مدينة العاشر من رمضان">10th of Ramadan City</span></p>
+                        <p><i class="fas fa-phone"></i> 01118544077</p>
+                        <p><i class="fas fa-envelope"></i> anaunited10@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p data-en="&copy; 2023 United Company ANA. All Rights Reserved." data-ar="&copy; 2023 الشركة المتحدة ANA. جميع الحقوق محفوظة.">&copy; 2023 United Company ANA. All Rights Reserved.</p>
+                <p data-en="Engineer: Ashraf Saeed" data-ar="المهندس: أشرف سعيد">Engineer: Ashraf Saeed</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="scripts/main.js"></script>
+    <script src="scripts/contact.js"></script>
+</body>
+</html>
+

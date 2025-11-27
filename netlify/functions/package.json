@@ -1,0 +1,10 @@
+{
+  "name": "netlify-functions",
+  "version": "1.0.0",
+  "description": "Netlify functions for United Company website",
+  "main": "contact.js",
+  "dependencies": {
+    "axios": "^1.6.0"
+  }
+}
+

@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
             mobileNav.classList.remove('active');
             mobileMenu.setAttribute('aria-expanded', 'false');
         } else {
-            mobileNav.classList.add('active');
+        mobileNav.classList.add('active');
             mobileMenu.setAttribute('aria-expanded', 'true');
         }
     });
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('click', function(e) {
         if (mobileNav.classList.contains('active')) {
             if (!mobileNav.contains(e.target) && !mobileMenu.contains(e.target)) {
-                mobileNav.classList.remove('active');
+        mobileNav.classList.remove('active');
                 mobileMenu.setAttribute('aria-expanded', 'false');
             }
         }
@@ -127,10 +127,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Small delay to ensure menu closes before scrolling
                 setTimeout(() => {
-                    window.scrollTo({
+                window.scrollTo({
                         top: offsetPosition,
-                        behavior: 'smooth'
-                    });
+                    behavior: 'smooth'
+                });
                 }, 100);
             }
         });
@@ -175,10 +175,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             // Simple text elements
             else {
-                if (lang === 'ar') {
-                    element.textContent = element.getAttribute('data-ar');
-                } else {
-                    element.textContent = element.getAttribute('data-en');
+            if (lang === 'ar') {
+                element.textContent = element.getAttribute('data-ar');
+            } else {
+                element.textContent = element.getAttribute('data-en');
                 }
             }
         });
@@ -473,34 +473,248 @@ document.addEventListener('DOMContentLoaded', function() {
         
         servicesGrid.innerHTML = '';
         
+        // Map service slugs to their image filenames
+        const serviceImages = {
+            'industrial-supplies': ['Industrial Supplies1.jpg', 'Industrial Supplies2.jpg'],
+            'steel-structures': ['Steel Structures1.jpg', 'Steel Structures2.jpg'],
+            'welding-services': ['Welding Services1.jpg', 'Welding Services2.jpg'],
+            'kitchen-equipment': ['Kitchen Equipment1.jpg', 'Kitchen Equipment2.jpg'],
+            'piping-systems': ['Piping Systems1.jpeg', 'Piping Systems2.webp'],
+            'tanks-reservoirs': ['Tanks & Reservoirs1.jpg', 'Tanks & Reservoirs2jpg.jpg'],
+            'ladders': ['Ladders1.jpg', 'Ladders2.webp']
+        };
+        
         services.forEach(service => {
             const serviceCard = document.createElement('div');
             serviceCard.className = 'service-card';
             
             const productPage = `${service.slug}.html`;
+            const images = serviceImages[service.slug] || [];
             
             serviceCard.innerHTML = `
                 <a href="${productPage}" style="text-decoration: none; color: inherit; display: block;">
-                    <div class="service-icon">
-                        <i class="${service.icon}"></i>
-                    </div>
-                    <div class="service-content">
+                    <div class="service-image-carousel" data-slug="${service.slug}">
+                        ${images.map((img, index) => 
+                            `<img src="images/cards_photos/${img}" alt="${service.title}" class="carousel-image ${index === 0 ? 'active' : ''}" loading="lazy">`
+                        ).join('')}
+                </div>
+                <div class="service-content">
                         <h3 class="service-title" data-en="${service.title}" data-ar="${service.titleAr}">${currentLang === 'ar' ? service.titleAr : service.title}</h3>
                         <p class="service-description" data-en="${service.description}" data-ar="${service.descriptionAr}">${currentLang === 'ar' ? service.descriptionAr : service.description}</p>
-                        <ul class="service-features">
-                            ${service.features.map((feature, index) => 
+                    <ul class="service-features">
+                        ${service.features.map((feature, index) => 
                                 `<li data-en="${feature}" data-ar="${service.featuresAr[index]}">${currentLang === 'ar' ? service.featuresAr[index] : feature}</li>`
-                            ).join('')}
-                        </ul>
+                        ).join('')}
+                    </ul>
                         <div style="margin-top: 20px;">
                             <span class="btn" style="display: inline-block;" data-en="View Details" data-ar="عرض التفاصيل">${currentLang === 'ar' ? 'عرض التفاصيل' : 'View Details'}</span>
                         </div>
-                    </div>
+                </div>
                 </a>
             `;
             
             servicesGrid.appendChild(serviceCard);
         });
+        
+        // Initialize carousels for all service cards
+        initializeServiceCarousels();
+    }
+    
+    // Initialize service card image carousels
+    function initializeServiceCarousels() {
+        const carousels = document.querySelectorAll('.service-image-carousel');
+        
+        carousels.forEach(carousel => {
+            const images = carousel.querySelectorAll('.carousel-image');
+            if (images.length < 2) return; // Need at least 2 images to rotate
+            
+            let currentIndex = 0;
+            
+            // Rotate images every 5 seconds (slower)
+            const intervalId = setInterval(() => {
+                images[currentIndex].classList.remove('active');
+                currentIndex = (currentIndex + 1) % images.length;
+                images[currentIndex].classList.add('active');
+            }, 5000);
+            
+            // Store interval ID on carousel element for cleanup if needed
+            carousel.dataset.intervalId = intervalId;
+        });
+    }
+    
+    // Set up product page carousel based on current page - as background behind text
+    function setupProductPageCarousel() {
+        const productHero = document.querySelector('.product-hero');
+        if (!productHero) {
+            console.log('Product hero section not found');
+            return;
+        }
+        
+        // Map page slugs to image filenames
+        const serviceImages = {
+            'industrial-supplies': ['Industrial Supplies1.jpg', 'Industrial Supplies2.jpg'],
+            'steel-structures': ['Steel Structures1.jpg', 'Steel Structures2.jpg'],
+            'welding-services': ['Welding Services1.jpg', 'Welding Services2.jpg'],
+            'kitchen-equipment': ['Kitchen Equipment1.jpg', 'Kitchen Equipment2.jpg'],
+            'piping-systems': ['Piping Systems1.jpeg', 'Piping Systems2.webp'],
+            'tanks-reservoirs': ['Tanks & Reservoirs1.jpg', 'Tanks & Reservoirs2jpg.jpg'],
+            'ladders': ['Ladders1.jpg', 'Ladders2.webp']
+        };
+        
+        // Get current page slug - try data attribute first (most reliable)
+        let currentPage = body.getAttribute('data-product');
+        
+        // If no data attribute, try URL detection
+        if (!currentPage) {
+            const href = window.location.href;
+            const pathname = window.location.pathname;
+            
+            // Method 1: From URL pathname
+            if (pathname && pathname.includes('.html')) {
+                currentPage = pathname.split('/').pop().replace('.html', '');
+            }
+            // Method 2: From full href
+            else if (href && href.includes('.html')) {
+                const urlParts = href.split('/');
+                const filename = urlParts[urlParts.length - 1];
+                if (filename.includes('.html')) {
+                    currentPage = filename.replace('.html', '');
+                }
+            }
+        }
+        
+        console.log('Current page detected:', currentPage);
+        console.log('Available images:', serviceImages[currentPage]);
+        
+        const images = serviceImages[currentPage];
+        
+        if (!images || images.length < 2) {
+            console.log('No images found for page:', currentPage);
+            return;
+        }
+        
+        // Create carousel container as background
+        const carouselContainer = document.createElement('div');
+        carouselContainer.className = 'product-image-carousel';
+        
+        // Create image elements with error handling
+        images.forEach((img, index) => {
+            const imgElement = document.createElement('img');
+            imgElement.src = `images/cards_photos/${img}`;
+            imgElement.alt = `Product image ${index + 1}`;
+            imgElement.className = `carousel-image ${index === 0 ? 'active' : ''}`;
+            imgElement.loading = 'eager';
+            
+            // Set initial opacity for first image
+            if (index === 0) {
+                imgElement.style.opacity = '0.7';
+                imgElement.style.zIndex = '1';
+            } else {
+                imgElement.style.opacity = '0';
+                imgElement.style.zIndex = '0';
+            }
+            
+            // Add error handler
+            imgElement.onerror = function() {
+                console.error('Failed to load image:', imgElement.src);
+                console.error('Full path attempted:', this.src);
+                // Don't hide, show error state
+                this.style.border = '2px solid red';
+                this.style.backgroundColor = '#ff0000';
+            };
+            
+            // Add load handler
+            imgElement.onload = function() {
+                console.log('✓ Successfully loaded image:', imgElement.src);
+                console.log('Image dimensions:', this.naturalWidth, 'x', this.naturalHeight);
+                // Ensure first image is visible after loading
+                if (index === 0) {
+                    this.style.opacity = '0.7';
+                    this.classList.add('active');
+                    console.log('First image set to visible');
+                }
+            };
+            
+            carouselContainer.appendChild(imgElement);
+        });
+        
+        // Insert carousel at the beginning of product-hero (behind content)
+        productHero.insertBefore(carouselContainer, productHero.firstChild);
+        console.log('Carousel created as background');
+        console.log('Carousel container:', carouselContainer);
+        console.log('Images in carousel:', carouselContainer.querySelectorAll('img').length);
+        console.log('Product hero:', productHero);
+        console.log('Product hero computed style:', window.getComputedStyle(productHero));
+        
+        // Check if carousel is visible
+        setTimeout(() => {
+            const carousel = document.querySelector('.product-image-carousel');
+            if (carousel) {
+                console.log('Carousel found after insertion');
+                console.log('Carousel position:', carousel.getBoundingClientRect());
+                console.log('Carousel z-index:', window.getComputedStyle(carousel).zIndex);
+                const imgs = carousel.querySelectorAll('img');
+                imgs.forEach((img, i) => {
+                    console.log(`Image ${i}:`, {
+                        src: img.src,
+                        opacity: window.getComputedStyle(img).opacity,
+                        display: window.getComputedStyle(img).display,
+                        visibility: window.getComputedStyle(img).visibility,
+                        hasActive: img.classList.contains('active')
+                    });
+                });
+            }
+        }, 1000);
+        
+        // Initialize carousel rotation after images have a chance to load
+        setTimeout(() => {
+            initializeProductPageCarousel();
+        }, 1000);
+    }
+    
+    // Initialize product page image carousels
+    function initializeProductPageCarousel() {
+        const productCarousel = document.querySelector('.product-image-carousel');
+        if (!productCarousel) {
+            console.log('Product carousel not found for initialization');
+            return;
+        }
+        
+        const images = productCarousel.querySelectorAll('.carousel-image');
+        console.log('Found images in carousel:', images.length);
+        
+        if (images.length < 2) {
+            console.log('Not enough images for carousel:', images.length);
+            // Still show the first image if only one exists
+            if (images.length === 1) {
+                images[0].classList.add('active');
+            }
+            return;
+        }
+        
+        // Ensure first image is visible
+        images[0].classList.add('active');
+        images[0].style.opacity = '1';
+        
+        let currentIndex = 0;
+        
+        // Rotate images every 5 seconds (slower)
+        const intervalId = setInterval(() => {
+            if (images.length < 2) return;
+            
+            images[currentIndex].classList.remove('active');
+            images[currentIndex].style.opacity = '0';
+            
+            currentIndex = (currentIndex + 1) % images.length;
+            
+            images[currentIndex].classList.add('active');
+            images[currentIndex].style.opacity = '0.7';
+            
+            console.log('Rotated to image', currentIndex + 1, 'of', images.length);
+        }, 5000);
+        
+        productCarousel.dataset.intervalId = intervalId;
+        console.log('Carousel rotation started');
     }
     
     // Initialize clients data - Show only logos, no text placeholders
@@ -571,4 +785,7 @@ document.addEventListener('DOMContentLoaded', function() {
             element.textContent = isArabic && updatedArText ? updatedArText : updatedEnText;
         }
     });
+    
+    // Initialize product page carousel if on a product page
+    setupProductPageCarousel();
 });

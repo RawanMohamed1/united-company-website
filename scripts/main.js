@@ -103,38 +103,92 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            const targetId = this.getAttribute('href');
-            if (targetId === '#' || targetId === '') return;
-            
+    // Helper function to scroll to an element
+    function scrollToElement(targetId) {
             const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                e.preventDefault();
-                
+        if (!targetElement) return false;
+        
                 // Close mobile menu if open
                 mobileNav.classList.remove('active');
-                mobileMenu.setAttribute('aria-expanded', 'false');
-                
-                // Get header height
-                const header = document.querySelector('header');
-                const headerHeight = header ? header.offsetHeight : 80;
-                
-                // Calculate scroll position accounting for header
-                const elementPosition = targetElement.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
-                
-                // Small delay to ensure menu closes before scrolling
-                setTimeout(() => {
+        mobileMenu.setAttribute('aria-expanded', 'false');
+        
+        // Get header height
+        const header = document.querySelector('header');
+        const headerHeight = header ? header.offsetHeight : 80;
+        
+        // Calculate scroll position accounting for header
+        const elementPosition = targetElement.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+        
+        // Small delay to ensure menu closes before scrolling
+        setTimeout(() => {
                 window.scrollTo({
-                        top: offsetPosition,
+                top: offsetPosition,
                     behavior: 'smooth'
                 });
-                }, 100);
+        }, 100);
+        
+        return true;
+    }
+    
+    // Smooth scrolling for anchor links (both #anchor and page.html#anchor)
+    document.querySelectorAll('a[href*="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (!href || href === '#') return;
+            
+            // Extract hash from href (handles both #contact and index.html#contact)
+            const hashMatch = href.match(/#(.+)$/);
+            if (!hashMatch) return;
+            
+            const targetId = '#' + hashMatch[1];
+            
+            // If it's a same-page link (starts with #), prevent default and scroll
+            if (href.startsWith('#')) {
+                e.preventDefault();
+                scrollToElement(targetId);
             }
+            // If it's a cross-page link (like index.html#contact), let browser navigate
+            // but we'll handle the scroll on the target page via hashchange event
         });
     });
+    
+    // Handle hash in URL on page load (for direct navigation or cross-page links)
+    function handleHashOnLoad() {
+        const hash = window.location.hash;
+        if (hash) {
+            // Wait for page to fully load, including all dynamic content
+            // This ensures carousel, clients, etc. are loaded before scrolling
+            const checkAndScroll = () => {
+                const targetElement = document.querySelector(hash);
+                if (targetElement) {
+                    // Double-check we're scrolling to the right element
+                    console.log('Scrolling to:', hash, targetElement.id);
+                    scrollToElement(hash);
+                } else {
+                    // If element not found yet, wait a bit more
+                    setTimeout(checkAndScroll, 100);
+                }
+            };
+            
+            // Start checking after initial load
+            setTimeout(checkAndScroll, 600);
+        }
+    }
+    
+    // Handle hash changes (when clicking links on the same page)
+    window.addEventListener('hashchange', function() {
+        const hash = window.location.hash;
+        if (hash) {
+            setTimeout(() => {
+                console.log('Hash changed to:', hash);
+                scrollToElement(hash);
+            }, 100);
+        }
+    });
+    
+    // Handle hash on initial page load
+    handleHashOnLoad();
     
     // Initialize hero carousel
     initializeHeroCarousel();
@@ -495,7 +549,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <a href="${productPage}" style="text-decoration: none; color: inherit; display: block;">
                     <div class="service-image-carousel" data-slug="${service.slug}">
                         ${images.map((img, index) => 
-                            `<img src="images/cards_photos/${img}" alt="${service.title}" class="carousel-image ${index === 0 ? 'active' : ''}" loading="lazy">`
+                            `<img src="/images/cards_photos/${img}" alt="${service.title}" class="carousel-image ${index === 0 ? 'active' : ''}" loading="lazy">`
                         ).join('')}
                 </div>
                 <div class="service-content">
@@ -546,9 +600,10 @@ document.addEventListener('DOMContentLoaded', function() {
     function setupProductPageCarousel() {
         const productHero = document.querySelector('.product-hero');
         if (!productHero) {
-            console.log('Product hero section not found');
+            console.log('❌ Product hero not found');
             return;
         }
+        console.log('✓ Product hero found');
         
         // Map page slugs to image filenames
         const serviceImages = {
@@ -563,11 +618,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Get current page slug - try data attribute first (most reliable)
         let currentPage = body.getAttribute('data-product');
+        console.log('Data-product:', currentPage);
         
         // If no data attribute, try URL detection
         if (!currentPage) {
             const href = window.location.href;
             const pathname = window.location.pathname;
+            console.log('URL:', href, 'Pathname:', pathname);
             
             // Method 1: From URL pathname
             if (pathname && pathname.includes('.html')) {
@@ -583,138 +640,233 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        console.log('Current page detected:', currentPage);
-        console.log('Available images:', serviceImages[currentPage]);
-        
+        console.log('Current page:', currentPage);
         const images = serviceImages[currentPage];
+        console.log('Images for page:', images);
         
         if (!images || images.length < 2) {
-            console.log('No images found for page:', currentPage);
+            console.log('❌ No images found for page');
             return;
         }
         
         // Create carousel container as background
         const carouselContainer = document.createElement('div');
         carouselContainer.className = 'product-image-carousel';
+        console.log('Carousel container created');
         
         // Create image elements with error handling
         images.forEach((img, index) => {
             const imgElement = document.createElement('img');
-            imgElement.src = `images/cards_photos/${img}`;
+            // Use relative path - works better with local file system
+            const imgPath = `images/cards_photos/${img}`;
+            imgElement.src = imgPath;
             imgElement.alt = `Product image ${index + 1}`;
             imgElement.className = `carousel-image ${index === 0 ? 'active' : ''}`;
             imgElement.loading = 'eager';
             
-            // Set initial opacity for first image
+            console.log(`Creating image ${index + 1}: ${imgPath}`);
+            
+            // Set initial opacity for first image - make it more visible for testing
             if (index === 0) {
-                imgElement.style.opacity = '0.7';
+                imgElement.style.opacity = '1';
                 imgElement.style.zIndex = '1';
+                imgElement.style.position = 'absolute';
+                imgElement.style.top = '0';
+                imgElement.style.left = '0';
+                imgElement.style.width = '100%';
+                imgElement.style.height = '100%';
             } else {
                 imgElement.style.opacity = '0';
                 imgElement.style.zIndex = '0';
+                imgElement.style.position = 'absolute';
+                imgElement.style.top = '0';
+                imgElement.style.left = '0';
+                imgElement.style.width = '100%';
+                imgElement.style.height = '100%';
             }
             
             // Add error handler
             imgElement.onerror = function() {
-                console.error('Failed to load image:', imgElement.src);
-                console.error('Full path attempted:', this.src);
-                // Don't hide, show error state
-                this.style.border = '2px solid red';
-                this.style.backgroundColor = '#ff0000';
+                console.error('❌ Failed to load image:', imgPath);
+                console.error('Full URL:', this.src);
+                console.error('Trying alternative path...');
+                // Try alternative path
+                this.src = `./images/cards_photos/${img}`;
             };
             
             // Add load handler
             imgElement.onload = function() {
-                console.log('✓ Successfully loaded image:', imgElement.src);
-                console.log('Image dimensions:', this.naturalWidth, 'x', this.naturalHeight);
+                console.log('✓✓✓ Image SUCCESSFULLY loaded:', imgPath);
+                console.log('Dimensions:', this.naturalWidth, 'x', this.naturalHeight);
+                console.log('Image element:', this);
                 // Ensure first image is visible after loading
                 if (index === 0) {
-                    this.style.opacity = '0.7';
+                    this.style.cssText = 'opacity: 1 !important; visibility: visible !important; display: block !important; z-index: 10 !important; position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; object-fit: cover !important;';
                     this.classList.add('active');
-                    console.log('First image set to visible');
+                    console.log('✓✓✓ First image set to visible with inline styles');
+                    console.log('Computed opacity:', window.getComputedStyle(this).opacity);
+                    console.log('Computed display:', window.getComputedStyle(this).display);
+                    console.log('Computed visibility:', window.getComputedStyle(this).visibility);
+                    console.log('Image element:', this);
                 }
             };
             
             carouselContainer.appendChild(imgElement);
         });
         
-        // Insert carousel at the beginning of product-hero (behind content)
-        productHero.insertBefore(carouselContainer, productHero.firstChild);
-        console.log('Carousel created as background');
-        console.log('Carousel container:', carouselContainer);
-        console.log('Images in carousel:', carouselContainer.querySelectorAll('img').length);
-        console.log('Product hero:', productHero);
-        console.log('Product hero computed style:', window.getComputedStyle(productHero));
+        // Check if carousel already exists (from HTML)
+        const existingCarousel = productHero.querySelector('.product-image-carousel');
+        if (existingCarousel) {
+            // Carousel already exists in HTML, just initialize rotation
+            setTimeout(() => initializeProductPageCarousel(), 100);
+            return;
+        }
         
-        // Check if carousel is visible
+        // Remove background gradient from hero so images show through
+        productHero.style.background = 'transparent';
+        productHero.style.backgroundImage = 'none';
+        
+        // Insert carousel at the beginning of product-hero (behind content)
+        // Insert before container div so it's truly behind everything
+        const container = productHero.querySelector('.container');
+        if (container) {
+            productHero.insertBefore(carouselContainer, container);
+        } else {
+            productHero.insertBefore(carouselContainer, productHero.firstChild);
+        }
+        
+        // Force carousel to be visible with important styles
+        carouselContainer.style.cssText = 'display: block !important; visibility: visible !important; opacity: 1 !important; position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; z-index: 0 !important;';
+        
+        console.log('Carousel inserted into hero');
+        console.log('Carousel element:', carouselContainer);
+        console.log('Carousel images count:', carouselContainer.querySelectorAll('img').length);
+        
+        // Verify carousel is in DOM
         setTimeout(() => {
-            const carousel = document.querySelector('.product-image-carousel');
-            if (carousel) {
-                console.log('Carousel found after insertion');
-                console.log('Carousel position:', carousel.getBoundingClientRect());
-                console.log('Carousel z-index:', window.getComputedStyle(carousel).zIndex);
-                const imgs = carousel.querySelectorAll('img');
+            const checkCarousel = document.querySelector('.product-image-carousel');
+            if (checkCarousel) {
+                console.log('✓ Carousel verified in DOM');
+                const imgs = checkCarousel.querySelectorAll('img');
+                console.log('Images found:', imgs.length);
                 imgs.forEach((img, i) => {
                     console.log(`Image ${i}:`, {
                         src: img.src,
+                        complete: img.complete,
+                        naturalWidth: img.naturalWidth,
+                        naturalHeight: img.naturalHeight,
                         opacity: window.getComputedStyle(img).opacity,
                         display: window.getComputedStyle(img).display,
-                        visibility: window.getComputedStyle(img).visibility,
-                        hasActive: img.classList.contains('active')
+                        zIndex: window.getComputedStyle(img).zIndex
                     });
                 });
+            } else {
+                console.error('❌ Carousel not found in DOM after insertion');
             }
-        }, 1000);
+        }, 500);
         
-        // Initialize carousel rotation after images have a chance to load
+        // Initialize carousel rotation after images load
         setTimeout(() => {
             initializeProductPageCarousel();
-        }, 1000);
+        }, 500);
     }
     
     // Initialize product page image carousels
     function initializeProductPageCarousel() {
         const productCarousel = document.querySelector('.product-image-carousel');
         if (!productCarousel) {
-            console.log('Product carousel not found for initialization');
+            console.log('No product carousel found');
             return;
         }
         
         const images = productCarousel.querySelectorAll('.carousel-image');
-        console.log('Found images in carousel:', images.length);
+        console.log('Found', images.length, 'images in carousel');
         
         if (images.length < 2) {
-            console.log('Not enough images for carousel:', images.length);
             // Still show the first image if only one exists
             if (images.length === 1) {
                 images[0].classList.add('active');
+                images[0].style.opacity = '1';
             }
             return;
         }
         
-        // Ensure first image is visible
-        images[0].classList.add('active');
-        images[0].style.opacity = '1';
+        // Clear any existing interval
+        if (productCarousel.dataset.intervalId) {
+            clearInterval(parseInt(productCarousel.dataset.intervalId));
+        }
         
-        let currentIndex = 0;
+        // Convert NodeList to Array for easier manipulation
+        const imageArray = Array.from(images);
         
-        // Rotate images every 5 seconds (slower)
-        const intervalId = setInterval(() => {
-            if (images.length < 2) return;
-            
-            images[currentIndex].classList.remove('active');
-            images[currentIndex].style.opacity = '0';
-            
-            currentIndex = (currentIndex + 1) % images.length;
-            
-            images[currentIndex].classList.add('active');
-            images[currentIndex].style.opacity = '0.7';
-            
-            console.log('Rotated to image', currentIndex + 1, 'of', images.length);
-        }, 5000);
+        // Ensure all images are properly styled and positioned
+        imageArray.forEach((img, index) => {
+            img.style.cssText = 'position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; object-fit: contain !important; object-position: center !important; transition: opacity 1s ease-in-out !important;';
+            if (index === 0) {
+                img.classList.add('active');
+                img.style.opacity = '1';
+                img.style.zIndex = '1';
+            } else {
+                img.classList.remove('active');
+                img.style.opacity = '0';
+                img.style.zIndex = '0';
+            }
+        });
         
-        productCarousel.dataset.intervalId = intervalId;
-        console.log('Carousel rotation started');
+        // Initialize current index
+        productCarousel.dataset.currentIndex = '0';
+        
+        // Function to rotate images
+        const rotateImages = () => {
+            if (imageArray.length < 2) {
+                return;
+            }
+            
+            // Get current index from dataset
+            let currentIndex = parseInt(productCarousel.dataset.currentIndex || '0');
+            
+            // Hide current image
+            const currentImg = imageArray[currentIndex];
+            if (currentImg) {
+                currentImg.classList.remove('active');
+                currentImg.style.opacity = '0';
+                currentImg.style.zIndex = '0';
+            }
+            
+            // Show next image
+            currentIndex = (currentIndex + 1) % imageArray.length;
+            productCarousel.dataset.currentIndex = currentIndex.toString();
+            
+            const nextImg = imageArray[currentIndex];
+            if (nextImg) {
+                nextImg.classList.add('active');
+                nextImg.style.opacity = '1';
+                nextImg.style.zIndex = '1';
+                console.log('✓ Rotated to image', currentIndex + 1, 'of', imageArray.length);
+            }
+        };
+        
+        // Clear any existing interval for this carousel
+        if (productCarousel.dataset.intervalId) {
+            clearInterval(parseInt(productCarousel.dataset.intervalId));
+        }
+        
+        // Start rotation after a short delay
+        setTimeout(() => {
+            // Test rotation once to verify it works
+            console.log('Testing rotation with', imageArray.length, 'images...');
+            rotateImages();
+            
+            // Then start interval
+            const intervalId = setInterval(() => {
+                rotateImages();
+            }, 5000);
+            
+            productCarousel.dataset.intervalId = intervalId.toString();
+            console.log('✓ Carousel rotation started with', imageArray.length, 'images');
+            console.log('Interval ID:', intervalId);
+            console.log('Will rotate every 5 seconds');
+        }, 1000);
     }
     
     // Initialize clients data - Show only logos, no text placeholders
@@ -788,4 +940,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize product page carousel if on a product page
     setupProductPageCarousel();
+    
+    // Also initialize carousel rotation directly if carousel exists in HTML
+    // This ensures rotation works even if setupProductPageCarousel doesn't run
+    if (document.querySelector('.product-image-carousel')) {
+        setTimeout(() => {
+            initializeProductPageCarousel();
+        }, 500);
+    }
 });

@@ -1195,12 +1195,18 @@ body.arabic .hero-content {
 
 /* Product Pages Styles */
 .product-hero {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    background: transparent;
     color: white;
     padding: 100px 0;
     text-align: center;
     position: relative;
     overflow: hidden;
+    min-height: 400px;
+}
+
+/* Fallback background if no carousel */
+.product-hero:not(:has(.product-image-carousel)) {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
 }
 
 .product-hero-content {
@@ -1222,8 +1228,12 @@ body.arabic .hero-content {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1;
+    z-index: 0;
     overflow: hidden;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    min-height: 400px;
+    display: block !important;
+    visibility: visible !important;
 }
 
 .product-image-carousel img {
@@ -1232,7 +1242,8 @@ body.arabic .hero-content {
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    object-position: center;
     opacity: 0;
     transition: opacity 1s ease-in-out;
     display: block;
@@ -1240,13 +1251,14 @@ body.arabic .hero-content {
 }
 
 .product-image-carousel img.active {
-    opacity: 0.7 !important;
-    z-index: 1;
+    opacity: 1 !important;
+    z-index: 1 !important;
     visibility: visible !important;
     display: block !important;
+    position: absolute !important;
 }
 
-/* Add overlay for better text readability */
+/* Add overlay for better text readability - same as main hero */
 .product-hero::after {
     content: '';
     position: absolute;
@@ -1254,13 +1266,14 @@ body.arabic .hero-content {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, rgba(26, 58, 108, 0.5), rgba(0, 208, 184, 0.4));
+    background: linear-gradient(135deg, rgba(26, 58, 108, 0.6), rgba(0, 208, 184, 0.5));
     z-index: 1;
     pointer-events: none;
 }
 
 .product-title {
     font-size: 3.5rem;
+    margin-top: 80px;
     margin-bottom: 20px;
     font-weight: 700;
 }
@@ -1374,6 +1387,7 @@ body.arabic .hero-content {
     
     .product-title {
         font-size: 2.5rem;
+        margin-top: 60px;
     }
     
     .product-image-carousel {

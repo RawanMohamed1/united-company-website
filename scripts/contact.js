@@ -32,16 +32,30 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     if (contactForm) {
-        contactForm.addEventListener('submit', async function(e) {
+        contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            // Get form elements
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const phoneInput = document.getElementById('phone');
+            const serviceInput = document.getElementById('service');
+            const messageInput = document.getElementById('message');
+            
+            // Check if all required elements exist
+            if (!nameInput || !emailInput || !messageInput) {
+                console.error('Form elements not found');
+                showFormMessage(getMessage('error'), 'error');
+                return;
+            }
             
             // Get form data
             const formData = {
-                name: document.getElementById('name').value.trim(),
-                email: document.getElementById('email').value.trim(),
-                phone: document.getElementById('phone').value.trim(),
-                service: document.getElementById('service').value,
-                message: document.getElementById('message').value.trim()
+                name: nameInput.value.trim(),
+                email: emailInput.value.trim(),
+                phone: phoneInput ? phoneInput.value.trim() : '',
+                service: serviceInput ? serviceInput.value : '',
+                message: messageInput.value.trim()
             };
             
             // Simple validation
@@ -61,37 +75,78 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // Disable submit button and show loading state
+            const originalText = submitButton ? submitButton.textContent : '';
             if (submitButton) {
                 submitButton.disabled = true;
-                const originalText = submitButton.textContent;
                 submitButton.textContent = getMessage('sending');
+            }
+            
+            try {
+                // Format service names
+                const serviceNames = {
+                    'industrial': getCurrentLanguage() === 'ar' ? 'مستلزمات المصانع' : 'Industrial Supplies',
+                    'structures': getCurrentLanguage() === 'ar' ? 'المنشآت المعدنية' : 'Steel Structures',
+                    'welding': getCurrentLanguage() === 'ar' ? 'خدمات اللحام' : 'Welding Services',
+                    'kitchen': getCurrentLanguage() === 'ar' ? 'تجهيزات المطابخ' : 'Kitchen Equipment',
+                    'piping': getCurrentLanguage() === 'ar' ? 'أنظمة المواسير' : 'Piping Systems',
+                    'tanks': getCurrentLanguage() === 'ar' ? 'الخزانات والتنكات' : 'Tanks & Reservoirs',
+                    'ladders': getCurrentLanguage() === 'ar' ? 'السلالم' : 'Ladders'
+                };
                 
-                try {
-                    // Submit to Netlify function
-                    const response = await fetch('/.netlify/functions/contact', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(formData)
-                    });
-                    
-                    const result = await response.json();
-                    
-                    if (response.ok && result.success) {
-                        showFormMessage(getMessage('success'), 'success');
-                        contactForm.reset();
-                    } else {
-                        showFormMessage(result.error || getMessage('error'), 'error');
-                    }
-                } catch (error) {
-                    console.error('Error submitting form:', error);
-                    showFormMessage(getMessage('error'), 'error');
-                } finally {
-                    // Re-enable submit button
-                    submitButton.disabled = false;
-                    submitButton.textContent = originalText;
+                const serviceText = formData.service ? (serviceNames[formData.service] || formData.service) : (getCurrentLanguage() === 'ar' ? 'غير محدد' : 'Not specified');
+                
+                // Format WhatsApp message
+                let whatsappMessage = '';
+                if (getCurrentLanguage() === 'ar') {
+                    whatsappMessage = `🔔 *طلب جديد من موقع الشركة المتحدة ANA*\n\n` +
+                        `*الاسم:* ${formData.name}\n` +
+                        `*البريد الإلكتروني:* ${formData.email}\n` +
+                        `*رقم الهاتف:* ${formData.phone || 'غير متوفر'}\n` +
+                        `*الخدمة:* ${serviceText}\n` +
+                        `*الرسالة:*\n${formData.message}`;
+                } else {
+                    whatsappMessage = `🔔 *New Contact Form Submission*\n\n` +
+                        `*Name:* ${formData.name}\n` +
+                        `*Email:* ${formData.email}\n` +
+                        `*Phone:* ${formData.phone || 'Not provided'}\n` +
+                        `*Service:* ${serviceText}\n` +
+                        `*Message:*\n${formData.message}`;
                 }
+                
+                // WhatsApp Business number (without +)
+                const whatsappNumber = '201117863705';
+                
+                // Encode message for URL
+                const encodedMessage = encodeURIComponent(whatsappMessage);
+                
+                // Create WhatsApp link
+                const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+                
+                // Try to open WhatsApp - handle popup blockers
+                const whatsappWindow = window.open(whatsappUrl, '_blank');
+                
+                // Check if popup was blocked
+                if (!whatsappWindow || whatsappWindow.closed || typeof whatsappWindow.closed === 'undefined') {
+                    // Popup blocked, try direct navigation
+                    window.location.href = whatsappUrl;
+                }
+                
+                // Show success message
+                showFormMessage(getMessage('success'), 'success');
+                contactForm.reset();
+                
+            } catch (error) {
+                console.error('Error preparing WhatsApp message:', error);
+                console.error('Error details:', error.message, error.stack);
+                showFormMessage(getMessage('error'), 'error');
+            } finally {
+                // Re-enable submit button
+                setTimeout(() => {
+                    if (submitButton) {
+                        submitButton.disabled = false;
+                        submitButton.textContent = originalText;
+                    }
+                }, 1000);
             }
         });
     }

@@ -712,31 +712,29 @@ body.arabic .mobile-dropdown-menu {
 
 .clients-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 40px;
     align-items: center;
 }
 
 .client-logo {
-    background-color: white;
-    height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 8px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-    padding: 15px;
+    padding: 10px;
 }
 
 .client-logo img {
     max-width: 100%;
-    max-height: 70px;
-    filter: grayscale(100%);
-    transition: filter 0.3s;
+    max-height: 120px;
+    width: auto;
+    height: auto;
+    filter: none;
+    transition: transform 0.3s ease;
 }
 
 .client-logo:hover img {
-    filter: grayscale(0%);
+    transform: scale(1.1);
 }
 
 .client-placeholder {

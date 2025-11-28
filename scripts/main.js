@@ -199,13 +199,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Initialize hero carousel
+    // Initialize hero carousel - Optimized for faster loading
     function initializeHeroCarousel() {
         const carousel = document.getElementById('heroCarousel');
         if (!carousel) return;
-        
-        // Dynamically discover images - works with any images in main_photos folder
-        let foundImages = [];
         
         // List of known images in the main_photos folder (updated with new pexels images)
         const knownImages = [
@@ -239,104 +236,86 @@ document.addEventListener('DOMContentLoaded', function() {
             'pexels-tima-miroshnichenko-6790087.jpg'
         ];
         
-        // Create image paths
-        const imagePaths = knownImages.map(filename => `images/main_photos/${filename}`);
+        // Create image paths and shuffle for random order
+        const imagePaths = knownImages.map(filename => `images/main_photos/${filename}`)
+            .sort(() => Math.random() - 0.5);
         
-        // Function to create carousel from images
-        function createCarouselFromImages(imageList) {
-            if (imageList.length === 0) {
-                console.warn('No images to display');
-                return;
+        let loadedImages = [];
+        let carouselStarted = false;
+        let firstImageDisplayed = false;
+        
+        // Function to start carousel rotation
+        function startCarouselRotation() {
+            if (carouselStarted || loadedImages.length < 2) return;
+            
+            carouselStarted = true;
+            
+            // Clear any existing interval
+            if (window.heroCarouselInterval) {
+                clearInterval(window.heroCarouselInterval);
             }
             
-            // Clear existing carousel
-            carousel.innerHTML = '';
+            let currentIndex = 0;
+            const allImages = carousel.querySelectorAll('img');
             
-            // Shuffle images for random order (not in order as requested)
-            const shuffledImages = [...imageList].sort(() => Math.random() - 0.5);
-            
-            console.log('Creating carousel with', shuffledImages.length, 'images');
-            
-            shuffledImages.forEach((src, index) => {
-                const img = document.createElement('img');
-                img.src = src;
-                img.alt = `Hero image ${index + 1}`;
-                img.style.display = 'block';
-                img.style.position = 'absolute';
-                img.style.top = '0';
-                img.style.left = '0';
-                img.style.width = '100%';
-                img.style.height = '100%';
-                img.style.objectFit = 'contain';
-                img.style.objectPosition = 'center';
-                if (index === 0) {
-                    img.style.opacity = '1';
-                    img.classList.add('active');
-                } else {
-                    img.style.opacity = '0';
-                }
-                carousel.appendChild(img);
-            });
-            
-            // Start rotation if we have multiple images
-            if (shuffledImages.length > 1) {
-                // Clear any existing interval
-                if (window.heroCarouselInterval) {
-                    clearInterval(window.heroCarouselInterval);
-                    window.heroCarouselInterval = null;
-                }
+            window.heroCarouselInterval = setInterval(() => {
+                if (allImages.length < 2) return;
                 
+                allImages[currentIndex].classList.remove('active');
+                allImages[currentIndex].style.opacity = '0';
+                
+                currentIndex = (currentIndex + 1) % allImages.length;
+                
+                allImages[currentIndex].classList.add('active');
+                allImages[currentIndex].style.opacity = '1';
+            }, 4000);
+        }
+        
+        // Function to add image to carousel as soon as it loads (progressive loading)
+        function addImageToCarousel(src) {
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = `Hero image ${loadedImages.length + 1}`;
+            img.style.display = 'block';
+            img.style.position = 'absolute';
+            img.style.top = '0';
+            img.style.left = '0';
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'contain';
+            img.style.objectPosition = 'center';
+            img.loading = 'eager'; // Load immediately for hero images
+            
+            // First image should be visible immediately
+            if (!firstImageDisplayed) {
+                img.style.opacity = '1';
+                img.classList.add('active');
+                firstImageDisplayed = true;
+            } else {
+                img.style.opacity = '0';
+            }
+            
+            carousel.appendChild(img);
+            loadedImages.push(src);
+            
+            // Start rotation as soon as we have 2 images
+            if (loadedImages.length === 2 && !carouselStarted) {
                 setTimeout(() => {
-                    let currentIndex = 0;
-                    console.log('Starting carousel rotation with', shuffledImages.length, 'images');
-                    
-                    window.heroCarouselInterval = setInterval(() => {
-                        const allImages = carousel.querySelectorAll('img');
-                        if (allImages.length === 0 || allImages.length === 1) {
-                            return;
-                        }
-                        
-                        allImages[currentIndex].classList.remove('active');
-                        allImages[currentIndex].style.opacity = '0';
-                        
-                        currentIndex = (currentIndex + 1) % allImages.length;
-                        
-                        allImages[currentIndex].classList.add('active');
-                        allImages[currentIndex].style.opacity = '1';
-                        
-                        console.log('Rotating to image', currentIndex + 1, 'of', allImages.length);
-                    }, 4000);
-                }, 2000);
+                    startCarouselRotation();
+                }, 1000);
             }
         }
         
-        // Load images and verify they exist
-        let loadedCount = 0;
-        imagePaths.forEach((src, index) => {
+        // Preload all images in parallel for faster loading
+        imagePaths.forEach((src) => {
             const img = new Image();
             img.onload = function() {
-                foundImages.push(src);
-                loadedCount++;
-                console.log('✓ Loaded:', src, 'Total:', loadedCount);
-                
-                // Create carousel once all images are checked
-                if (loadedCount === imagePaths.length) {
-                    createCarouselFromImages(foundImages);
-                }
+                addImageToCarousel(src);
             };
             img.onerror = function() {
                 console.warn('Failed to load:', src);
-                loadedCount++;
-                
-                // Create carousel once all images are checked (even if some failed)
-                if (loadedCount === imagePaths.length) {
-                    if (foundImages.length > 0) {
-                        createCarouselFromImages(foundImages);
-                    } else {
-                        console.error('No images could be loaded');
-                    }
-                }
             };
+            // Start loading immediately
             img.src = src;
         });
     }
@@ -524,52 +503,50 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Initialize clients data
+    // Initialize clients data - Show only logos, no text placeholders
     function initializeClients() {
         const clientsGrid = document.querySelector('.clients-grid');
         
-        const clients = [
-            'Sieg Pharma',
-            'CMS Systems',
-            'Pharma Frites',
-            'Biogeneric Pharma',
-            'Al-Rowad Club',
-            'Roshena Food Industries',
-            'Al-Rabie Juices',
-            'Presidency of the Republic',
-            'High Foods',
-            'Swifex',
-            'UP Gas',
-            'Al-Rowad Company',
-            'Lourbal Cosmetics',
-            'Dahl Natural Juice',
-            'Misr Atsuka',
-            'Al-Andalus Pharma',
-            'Blue Pharma',
-            'Cairo International Airport',
-            'Cadbury Food Industries',
-            'Al-Maghrabi Farms',
-            'Marbout Sharm El-Sheikh Hotel',
-            'Daber Amla Oils',
-            'Abdel Razek Farms',
-            'Dioravit Sanitary Tools',
-            'Every Medical Pharma',
-            'Ibdco Pharma',
-            'Sharm El-Sheikh International Airport',
-            'Dina Farms',
-            'Stella Makadi Hurghada Hotel',
-            'Kentai Engineers Restaurant',
-            'Misr Solar Energy'
+        // List of all available logo filenames in images/clients folder
+        const logoFilenames = [
+            'Al-Rabie_Juices-removebg-preview.png',
+            'Al-Rowad_Club-removebg-preview.png',
+            'Biogeneric_Pharma-removebg-preview.png',
+            'CMS-removebg-preview.png',
+            'Roshtan-removebg-preview.png',
+            'farm_frites-removebg-preview.png',
+            'swifx-removebg-preview.png',
+            'misr-removebg-preview.png',
+            'pladis-removebg-preview.png',
+            'mag-removebg-preview.png',
+            'sigma_Parma-removebg-preview.png',
+            'dohler-removebg-preview.png',
+            'galaxy-removebg-preview.png',
+            'minapharm-removebg-preview.png',
+            'otsuka-removebg-preview.png',
+            'SunnyPharma-removebg-preview.png',
+            'egyptair-removebg-preview.png',
+            'cropped-ssh-logo-234x78-removebg-preview.png',
+            '1681990051801-removebg-preview.png',
+            'edit-removebg-preview.png',
+            'images-removebg-preview.png',
+            'logo-removebg-preview.png',
+            'Screenshot 2025-11-28 114659.png',
+            'Screenshot_2025-11-28_114540-removebg-preview.png'
         ];
         
         clientsGrid.innerHTML = '';
         
-        clients.forEach(client => {
+        // Display only logos - no text placeholders
+        logoFilenames.forEach(logoFilename => {
             const clientLogo = document.createElement('div');
             clientLogo.className = 'client-logo';
             
+            // Extract client name from filename for alt text
+            const altText = logoFilename.replace('-removebg-preview.png', '').replace('.png', '').replace(/_/g, ' ');
+            
             clientLogo.innerHTML = `
-                <div class="client-placeholder">${client}</div>
+                <img src="images/clients/${logoFilename}" alt="${altText}" loading="lazy">
             `;
             
             clientsGrid.appendChild(clientLogo);
